@@ -1,8 +1,17 @@
 <section>
-  <h3 class="section-title">Items</h3>
-
+  <div class="section-title title-with-filter">
+    <h3>Items</h3>
+    <input
+      #filterInput
+      class="form-control filter"
+      type="search"
+      placeholder="Filter by name..."
+      aria-label="Filter items by name"
+      (input)="searchText.set(filterInput.value)"
+    />
+  </div>
   <ul class="card-list">
-    @for (item of items(); track item.id) {
+    @for (item of filteredItems(); track item.id) {
       <li class="card">
         <div class="card-title">{{ item.name }}</div>
         <img class="card-image" src="img/item-image.png" alt="Image of {{ item.name }}" />

@@ -203,3 +203,18 @@ nav > a.active {
   background-color: blue;
   color: white;
 }
+
+.title-with-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-with-filter > h3 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.filter {
+  width: 250px;
+}

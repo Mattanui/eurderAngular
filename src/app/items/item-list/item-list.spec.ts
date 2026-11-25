@@ -25,6 +25,19 @@ describe('ItemList', () => {
     compiled = fixture.nativeElement as HTMLElement;
   });
 
+  async function typeInFilter(text: string) {
+    const filterInput = compiled.querySelector<HTMLInputElement>('input.filter')!;
+    filterInput.value = text;
+    filterInput.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+  }
+
+  function displayedItemNames(): string[] {
+    return Array.from(compiled.querySelectorAll('.card-title')).map((title) =>
+      title.textContent!.trim(),
+    );
+  }
+
   it('should display one card per item', () => {
     expect(compiled.querySelectorAll('.card').length).toBe(2);
   });
@@ -41,5 +54,25 @@ describe('ItemList', () => {
     expect(stocks[0].querySelector('img')?.getAttribute('src')).toBe('img/warning-icon-red.png');
     expect(stocks[1].textContent).toContain('High');
     expect(stocks[1].querySelector('img')?.getAttribute('src')).toBe('img/warning-icon-green.png');
+  });
+
+  it('should only display the items whose name starts with the filter, ignoring the case', async () => {
+    await typeInFilter('mac');
+
+    expect(displayedItemNames()).toEqual(['MacBuk Air']);
+  });
+
+  it('should display a message when no item matches the filter', async () => {
+    await typeInFilter('air');
+
+    expect(displayedItemNames()).toEqual([]);
+    expect(compiled.textContent).toContain('No items found.');
+  });
+
+  it('should display all the items again when the filter is cleared', async () => {
+    await typeInFilter('mac');
+    await typeInFilter('');
+
+    expect(displayedItemNames()).toEqual(['MacBuk Air', 'iPhony']);
   });
 });
