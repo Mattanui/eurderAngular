@@ -1,0 +1,21 @@
+<section>
+  <h3 class="section-title">Items</h3>
+
+  <ul class="card-list">
+    @for (item of items(); track item.id) {
+      <li class="card">
+        <div class="card-title">{{ item.name }}</div>
+        <img class="card-image" src="img/item-image.png" alt="Image of {{ item.name }}" />
+        <div class="card-footer">
+          <div>Price: {{ item.price | currency: 'EUR' }}</div>
+          <div class="stock">
+            <span>{{ stockUrgencyDisplay[item.stockUrgency].label }}</span>
+            <img class="icon" [src]="stockUrgencyDisplay[item.stockUrgency].icon" alt="Stock urgency" />
+          </div>
+        </div>
+      </li>
+    } @empty {
+      <li>No items found.</li>
+    }
+  </ul>
+</section>
